@@ -1,0 +1,160 @@
+<?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 5.6-c017 91.164464, 2020/06/15-10:20:05        ">
+    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+        <!-- XMP extension schema container schema -->
+        <rdf:Description rdf:about="JisJ library metadata schemas"
+                         xmlns:pdfaExtension="http://www.aiim.org/pdfa/ns/extension/"
+                         xmlns:pdfaSchema="http://www.aiim.org/pdfa/ns/schema#"
+                         xmlns:pdfaProperty="http://www.aiim.org/pdfa/ns/property#"
+                         xmlns:pdfaType="http://www.aiim.org/pdfa/ns/type#"
+                         xmlns:pdfaField="http://www.aiim.org/pdfa/ns/field#">
+            <!-- Container for all embedded extension schema descriptions -->
+            <pdfaExtension:schemas>
+                <rdf:Bag>
+                    <rdf:li rdf:parseType="Resource">
+                        <!-- Optional description of schema -->
+                        <pdfaSchema:schema>JisJ Book Schema</pdfaSchema:schema>
+                        <!-- Schema namespace URI -->
+                        <pdfaSchema:namespaceURI>http://www.jisj.com/ns/book/</pdfaSchema:namespaceURI>
+                        <!-- Preferred schema namespace prefix -->
+                        <pdfaSchema:prefix>work</pdfaSchema:prefix>
+                        <!-- Description of the schema properties -->
+                        <pdfaSchema:property>
+                            <rdf:Bag>
+                                <rdf:li rdf:parseType="Resource">
+                                    <pdfaProperty:name>UUID</pdfaProperty:name>
+                                    <pdfaProperty:valueType>GUID</pdfaProperty:valueType>
+                                    <pdfaProperty:category>internal</pdfaProperty:category>
+                                    <pdfaProperty:description>unique identifier of book</pdfaProperty:description>
+                                </rdf:li>
+                                <rdf:li rdf:parseType="Resource">
+                                    <pdfaProperty:name>Title</pdfaProperty:name>
+                                    <pdfaProperty:valueType>Text</pdfaProperty:valueType>
+                                    <pdfaProperty:category>internal</pdfaProperty:category>
+                                    <pdfaProperty:description>book title</pdfaProperty:description>
+                                </rdf:li>
+                                <rdf:li rdf:parseType="Resource">
+                                    <pdfaProperty:name>Date</pdfaProperty:name>
+                                    <pdfaProperty:valueType>Date</pdfaProperty:valueType>
+                                    <pdfaProperty:category>internal</pdfaProperty:category>
+                                    <pdfaProperty:description>creation date</pdfaProperty:description>
+                                </rdf:li>
+                                <rdf:li rdf:parseType="Resource">
+                                    <pdfaProperty:name>MusicSheets</pdfaProperty:name>
+                                    <pdfaProperty:valueType>musicsheets</pdfaProperty:valueType>
+                                    <pdfaProperty:category>internal</pdfaProperty:category>
+                                    <pdfaProperty:description>music sheets book</pdfaProperty:description>
+                                </rdf:li>
+                                <rdf:li rdf:parseType="Resource">
+                                    <pdfaProperty:name>Author</pdfaProperty:name>
+                                    <pdfaProperty:valueType>author</pdfaProperty:valueType>
+                                    <pdfaProperty:category>internal</pdfaProperty:category>
+                                    <pdfaProperty:description>work author</pdfaProperty:description>
+                                </rdf:li>
+                            </rdf:Bag>
+                        </pdfaSchema:property>
+                        <!-- Description of schema-specific value types -->
+                        <pdfaSchema:valueType>
+                            <rdf:Seq>
+                                <rdf:li rdf:parseType="Resource">
+                                    <pdfaType:type>musicsheets</pdfaType:type>
+                                    <pdfaType:namespaceURI>http://www.jisj.com/ns/book/musicsheets/
+                                    </pdfaType:namespaceURI>
+                                    <pdfaType:prefix>sheets</pdfaType:prefix>
+                                    <pdfaType:description>music sheets</pdfaType:description>
+                                    <!-- Optional description of the structured fields -->
+                                    <pdfaType:field>
+                                        <rdf:Seq>
+                                            <rdf:li rdf:parseType="Resource">
+                                                <pdfaField:name>key</pdfaField:name>
+                                                <pdfaField:valueType>Text</pdfaField:valueType>
+                                                <pdfaField:description>key name</pdfaField:description>
+                                            </rdf:li>
+                                            <rdf:li rdf:parseType="Resource">
+                                                <pdfaField:name>instrument</pdfaField:name>
+                                                <pdfaField:valueType>Text</pdfaField:valueType>
+                                                <pdfaField:description>musical instrument</pdfaField:description>
+                                            </rdf:li>
+                                        </rdf:Seq>
+                                    </pdfaType:field>
+                                </rdf:li>
+                                <rdf:li rdf:parseType="Resource">
+                                    <pdfaType:type>author</pdfaType:type>
+                                    <pdfaType:namespaceURI>http://www.jisj.com/ns/book/author/</pdfaType:namespaceURI>
+                                    <pdfaType:prefix>author</pdfaType:prefix>
+                                    <pdfaType:description>author</pdfaType:description>
+                                    <!-- Optional description of the structured fields -->
+                                    <pdfaType:field>
+                                        <rdf:Seq>
+                                            <rdf:li rdf:parseType="Resource">
+                                                <pdfaField:name>name</pdfaField:name>
+                                                <pdfaField:valueType>Text</pdfaField:valueType>
+                                                <pdfaField:description>plaintext name
+                                                </pdfaField:description>
+                                            </rdf:li>
+                                            <rdf:li rdf:parseType="Resource">
+                                                <pdfaField:name>UUID</pdfaField:name>
+                                                <pdfaField:valueType>GUID</pdfaField:valueType>
+                                                <pdfaField:description>author UUID</pdfaField:description>
+                                            </rdf:li>
+                                        </rdf:Seq>
+                                    </pdfaType:field>
+                                </rdf:li>
+                            </rdf:Seq>
+                        </pdfaSchema:valueType>
+                    </rdf:li>
+                </rdf:Bag>
+            </pdfaExtension:schemas>
+        </rdf:Description>
+        <!-- Use the XMP extension schema -->
+        <rdf:Description rdf:about="JisJ library metadata"
+                         xmlns:book="http://www.jisj.com/ns/book/"
+                         xmlns:author="http://www.jisj.com/ns/book/author/"
+                         xmlns:sheets="http://www.jisj.com/ns/book/musicsheets/">
+            <book:Title>Собрание сочинений</book:Title>
+            <book:UUID>0000-2222-3333-4444</book:UUID>
+            <book:Date>2025-01-21T21:37:06+01:00</book:Date>
+            <book:Works>
+                <rdf:Bag>
+                    <rdf:li rdf:parseType="Resource">
+                        <book:UUID>1111-2222-3333-4444</book:UUID>
+                        <book:Title>Sonata #14 Moonlight</book:Title>
+                        <book:Date>2008-01-21T21:37:06+01:00</book:Date>
+                        <book:Authors>
+                            <rdf:Bag>
+                                <rdf:li rdf:parseType="Resource">
+                                    <book:Author rdf:parseType="Resource">
+                                        <author:name>J.S. BACH</author:name>
+                                        <author:UUID>11111-11111-11111</author:UUID>
+                                    </book:Author>
+                                </rdf:li>
+                                <rdf:li rdf:parseType="Resource">
+                                    <book:Author rdf:parseType="Resource">
+                                        <author:name>L.V. BEETHOVEN</author:name>
+                                        <author:UUID>2222-2222-22222</author:UUID>
+                                    </book:Author>
+                                </rdf:li>
+                            </rdf:Bag>
+                        </book:Authors>
+                        <book:Genre>music_sheet</book:Genre>
+                        <book:Genres>
+                            <rdf:Bag>
+                                <rdf:li>sf</rdf:li>
+                                <rdf:li>sf_history</rdf:li>
+                            </rdf:Bag>
+                        </book:Genres>
+                        <book:MusicSheets rdf:parseType="Resource">
+                            <sheets:key>C-moll</sheets:key>
+                            <sheets:instrument>piano</sheets:instrument>
+                        </book:MusicSheets>
+                    </rdf:li>
+                </rdf:Bag>
+            </book:Works>
+        </rdf:Description>
+    </rdf:RDF>
+
+</x:xmpmeta>
+
+
+        <?xpacket end="w"?>
+
