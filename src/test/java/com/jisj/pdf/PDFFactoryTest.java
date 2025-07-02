@@ -6,11 +6,11 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class PDFReaderTest {
+public class PDFFactoryTest {
     static Path sourcePdf = Path.of("src/test/resources/pdf-test.pdf");
 
     @Test
     void readPdf() throws Exception {
-        assertNotNull(PDFReader.read(sourcePdf));
+        assertNotNull(PDFFactory.read(sourcePdf));
     }
 }

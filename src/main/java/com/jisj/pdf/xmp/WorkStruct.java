@@ -12,15 +12,41 @@ import java.util.UUID;
 
 import static com.jisj.pdf.Utils.formatCalendarToISO8601;
 
+/**
+ * Wrapper class for Work XMP structure
+ */
 public class WorkStruct extends ChildXMPStruct {
+    /**
+     * Work structure namespace
+     */
     public static final String NS = "http://www.jisj.com/ns/book/work";
+    /**
+     * Work structure namespace prefix
+     */
     public static final String PREFIX = "work";
-
+    /**
+     * Work title field name
+     */
     public static final String TITLE = "Title";
+    /**
+     * Work GUID field name
+     */
     public static final String GUID = "UUID";
+    /**
+     * Work create date name
+     */
     public static final String DATE_CREATED = "DateCreated";
+    /**
+     * Work genres section name
+     */
     public static final String GENRES = "Genres";
+    /**
+     * Work authors section name
+     */
     public static final String AUTHORS = "Authors";
+    /**
+     * Work music sheets section name
+     */
     public static final String SHEETS = "MusicSheets";
 
     /**
@@ -63,6 +89,10 @@ public class WorkStruct extends ChildXMPStruct {
         setStructField(GUID, uuid.toString());
     }
 
+    /**
+     * Gives the GUID of the work
+     * @return GUID if exists
+     */
     public Optional<UUID> getUUID() {
         return getStructField(GUID)
                 .map(XMPProperty::getValue)
@@ -101,6 +131,10 @@ public class WorkStruct extends ChildXMPStruct {
         appendArrayItem(getSchemaNS(), arrayPath, genre);
     }
 
+    /**
+     * Gives the genre list
+     * @return genre List | empty List
+     */
     public List<String> getGenres() {
         return getArray(getSchemaNS(), getStructFieldPath(getNS(), GENRES));
     }
@@ -121,6 +155,10 @@ public class WorkStruct extends ChildXMPStruct {
         author.setUUID(authorUUID);
     }
 
+    /**
+     * Gives the authors of the work
+     * @return list with author wrapper objects
+     */
     public List<AuthorStruct> getAuthors() {
         return getArrayStruct(getSchemaNS(), getStructFieldPath(getNS(), AUTHORS),
                 p -> new AuthorStruct(getMetadata(), getSchemaNS(), p));
@@ -131,6 +169,8 @@ public class WorkStruct extends ChildXMPStruct {
      *
      * @param key        music work key
      * @param instrument sheets instrument
+     * @param catalogNumber composer works catalog
+     * @param arrangedBy author name of the transcription or arrangement
      */
     public void setSheets(String key, String instrument, String catalogNumber, String arrangedBy) {
         String sheetsPath = setStructureField(getNS(), SHEETS, PropertyOptions.STRUCT);

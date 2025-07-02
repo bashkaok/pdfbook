@@ -25,6 +25,8 @@ public class BaseXMPStructure {
      * @param prefix    NS prefix
      */
     public BaseXMPStructure(XMPMeta metadata, String nameSpace, String prefix) {
+        if (metadata == null)
+            throw new IllegalArgumentException("Unexpected metadata value=null");
         this.metadata = metadata;
         this.nameSpace = nameSpace;
         this.prefix = prefix;
@@ -168,11 +170,12 @@ public class BaseXMPStructure {
 
     /**
      * Gives a list of structure element of array
+     *
      * @param nameSpace array name space
      * @param arrayName array name
-     * @param element element creator function: {@code <T> creator(String elementPath)}
+     * @param element   element creator function: {@code <T> creator(String elementPath)}
+     * @param <T>       structure object
      * @return list of elements of {@code <T>}
-     * @param <T> structure object
      */
     public <T> List<T> getArrayStruct(String nameSpace, String arrayName, Function<String, T> element) {
         List<T> result = new ArrayList<>();
@@ -188,8 +191,10 @@ public class BaseXMPStructure {
         return result;
 
     }
+
     /**
      * Gives the string array list
+     *
      * @param nameSpace array name space
      * @param arrayName array name
      * @return list with elements of array
@@ -207,15 +212,17 @@ public class BaseXMPStructure {
         return result;
 
     }
+
     /**
      * Appends the structure element to end of array
-     * @param arrayNS array namespace
+     *
+     * @param arrayNS   array namespace
      * @param arrayName array name
      * @return path to the struct element in array
      */
     public String appendArrayStructItem(String arrayNS, String arrayName) {
         try {
-            getMetadata().appendArrayItem(arrayNS, arrayName, Utils.newOptions(PropertyOptions.ARRAY_ORDERED),
+            getMetadata().appendArrayItem(arrayNS, arrayName, Utils.newOptions(PropertyOptions.ARRAY),
                     null, Utils.newOptions(PropertyOptions.STRUCT));
             // Assuming the structure was appended as the last item in the array
             int lastItemIndex = getMetadata().countArrayItems(arrayNS, arrayName);
@@ -228,9 +235,10 @@ public class BaseXMPStructure {
 
     /**
      * Appends the value to specified array
-     * @param arrayNS array namespace
+     *
+     * @param arrayNS       array namespace
      * @param arrayPathName name or a general path expression of array
-     * @param value item value
+     * @param value         item value
      * @return the general path expression to item was appended
      */
     public String appendArrayItem(String arrayNS, String arrayPathName, String value) {
