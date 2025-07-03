@@ -7,12 +7,23 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class AuthorStruct extends ChildXMPStruct {
+    /**
+     * Author structure namespace value
+     */
     public static final String NS = "http://www.jisj.com/ns/book/author";
+    /**
+     * Author structure namespace prefix value
+     */
     public static final String PREFIX = "author";
 
+    /**
+     * Author name property name
+     */
     public static final String NAME = "Name";
-    public static final String GUID = "UUID";
-
+    /**
+     * Author library GUID property name
+     */
+    public static final String GUID = "GUID";
 
     /**
      * Create Author structure access object
@@ -45,20 +56,20 @@ public class AuthorStruct extends ChildXMPStruct {
     }
 
     /**
-     * Sets UUID property value
+     * Sets GUID property value
      *
      * @param uuid identifier value
      */
-    public void setUUID(UUID uuid) {
+    public void setGUID(UUID uuid) {
         setStructField(GUID, uuid.toString());
     }
 
     /**
-     * Gives the author UUID
+     * Gives the author GUID
      *
-     * @return Optional UUID
+     * @return GUID if exists
      */
-    public Optional<UUID> getUUID() {
+    public Optional<UUID> getGUID() {
         return getStructField(GUID)
                 .map(XMPProperty::getValue)
                 .map(UUID::fromString);

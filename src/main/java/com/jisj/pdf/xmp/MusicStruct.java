@@ -3,16 +3,35 @@ package com.jisj.pdf.xmp;
 import com.adobe.internal.xmp.XMPMeta;
 import com.adobe.internal.xmp.properties.XMPProperty;
 
-public class MusicStruct extends ChildXMPStruct {
-    public static final String NS = "http://www.jisj.com/ns/book/musicsheets";
-    public static final String PREFIX = "sheets";
+import java.util.Map;
 
+/**
+ * Music sheets property structure
+ */
+public class MusicStruct extends ChildXMPStruct {
     /**
-     * Music sheets key sign
+     * Music structure namespace value
+     */
+    public static final String NS = "http://www.jisj.com/ns/book/musicsheets";
+    /**
+     * Music structure namespace prefix value
+     */
+    public static final String PREFIX = "sheets";
+    /**
+     * Music sheets key sign property name
      */
     public static final String KEY = "Key";
-    public static final String INSTRUMENT = "Instrument";
+    /**
+     * Musical instrument property name
+     */
+    public static final String INSTRUMENTS = "Instruments";
+    /**
+     * Music work catalog number property name
+     */
     public static final String CATALOG_NUMBER = "CatalogNumber";
+    /**
+     * Transcription or arrangement author name property name
+     */
     public static final String TRANSCRIPTION_BY = "Transcription";
 
 
@@ -48,12 +67,13 @@ public class MusicStruct extends ChildXMPStruct {
     }
 
     /**
-     * Sets the music sheets instrument
+     * Sets the music sheets instrument titles
+     * <p>The instruments should be divided by comma or semicolon</p>
      *
      * @param instrument name
      */
-    public void setInstrument(String instrument) {
-        setStructField(INSTRUMENT, instrument);
+    public void setInstruments(String instrument) {
+        setStructField(INSTRUMENTS, instrument);
     }
 
     /**
@@ -61,8 +81,8 @@ public class MusicStruct extends ChildXMPStruct {
      *
      * @return instrument name | empty String
      */
-    public String getInstrument() {
-        return getStructField(INSTRUMENT)
+    public String getInstruments() {
+        return getStructField(INSTRUMENTS)
                 .map(XMPProperty::getValue)
                 .orElse("");
     }
@@ -107,10 +127,22 @@ public class MusicStruct extends ChildXMPStruct {
                 .orElse("");
     }
 
+    /**
+     * Saves the structure to map propertyName:value
+     *
+     * @return map with propertyName:value
+     */
+    public Map<String, String> toMap() {
+        return Map.of(KEY, getKey(),
+                INSTRUMENTS, getInstruments(),
+                CATALOG_NUMBER, getCatalogNumber(),
+                TRANSCRIPTION_BY, getArrangedBy());
+    }
+
     @Override
     public String toString() {
         return "MusicType{" + KEY + "=" + getKey() +
-                "," + INSTRUMENT + "=" + getInstrument() +
+                "," + INSTRUMENTS + "=" + getInstruments() +
                 "," + CATALOG_NUMBER + "=" + getCatalogNumber() +
                 "," + TRANSCRIPTION_BY + "=" + getArrangedBy() +
                 "}";

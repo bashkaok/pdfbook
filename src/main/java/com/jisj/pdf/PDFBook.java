@@ -51,8 +51,9 @@ public class PDFBook implements Closeable {
      * Replace the metadata in the document
      *
      * @param metadata metadata object
-     * @throws IOException  when the metadata are encrypted
+     * @throws IOException read/write error
      * @throws XMPException metadata serialization error
+     * @throws PDFEncryptedMetadata when the metadata are encrypted
      */
     public void setMetadata(XMPMeta metadata) throws IOException, XMPException, PDFEncryptedMetadata {
         if (isMetaDataEncrypted())
@@ -72,6 +73,7 @@ public class PDFBook implements Closeable {
      * Gives BookScheme information
      *
      * @return {@code BookXPMSchema}} object | null when the metadata are encrypted
+     * @throws PDFException during metadata reading and parsing
      */
     public BookXMPSchema getBookXMPSchema() throws PDFException {
         if (isMetaDataEncrypted()) return null;

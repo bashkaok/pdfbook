@@ -3,14 +3,11 @@ package com.jisj.pdf.xmp;
 import com.adobe.internal.xmp.XMPMeta;
 import com.adobe.internal.xmp.options.PropertyOptions;
 import com.adobe.internal.xmp.properties.XMPProperty;
-import com.jisj.pdf.Utils;
 
-import java.util.Calendar;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import static com.jisj.pdf.Utils.formatCalendarToISO8601;
 
 /**
  * Wrapper class for Work XMP structure
@@ -31,7 +28,7 @@ public class WorkStruct extends ChildXMPStruct {
     /**
      * Work GUID field name
      */
-    public static final String GUID = "UUID";
+    public static final String GUID = "GUID";
     /**
      * Work create date name
      */
@@ -81,19 +78,22 @@ public class WorkStruct extends ChildXMPStruct {
     }
 
     /**
-     * Sets UUID property value
+     * Sets GUID property value
      *
      * @param uuid identifier value
      */
-    public void setUUID(UUID uuid) {
+    public void setGUID(UUID uuid) {
+        if (uuid == null)
+            throw new IllegalArgumentException("Unexpected UUID value = null");
         setStructField(GUID, uuid.toString());
     }
 
     /**
      * Gives the GUID of the work
+     *
      * @return GUID if exists
      */
-    public Optional<UUID> getUUID() {
+    public Optional<UUID> getGUID() {
         return getStructField(GUID)
                 .map(XMPProperty::getValue)
                 .map(UUID::fromString);
@@ -102,10 +102,10 @@ public class WorkStruct extends ChildXMPStruct {
     /**
      * Sets the date of work created
      *
-     * @param calendar calendar of work created
+     * @param date of work created
      */
-    public void setDateCreated(Calendar calendar) {
-        setStructField(DATE_CREATED, formatCalendarToISO8601(calendar));
+    public void setDateCreated(LocalDate date) {
+        setStructField(DATE_CREATED, date.toString());
     }
 
     /**
@@ -113,10 +113,10 @@ public class WorkStruct extends ChildXMPStruct {
      *
      * @return created date
      */
-    public Optional<Calendar> getDateCreated() {
+    public Optional<LocalDate> getDateCreated() {
         return getStructField(DATE_CREATED)
                 .map(XMPProperty::getValue)
-                .map(Utils::fromISO8601ToCalendar);
+                .map(LocalDate::parse);
     }
 
     /**
@@ -133,6 +133,7 @@ public class WorkStruct extends ChildXMPStruct {
 
     /**
      * Gives the genre list
+     *
      * @return genre List | empty List
      */
     public List<String> getGenres() {
@@ -152,11 +153,12 @@ public class WorkStruct extends ChildXMPStruct {
         AuthorStruct author = new AuthorStruct(getMetadata(), getSchemaNS(),
                 appendArrayStructItem(getSchemaNS(), arrayPath));
         author.setName(authorName);
-        author.setUUID(authorUUID);
+        author.setGUID(authorUUID);
     }
 
     /**
      * Gives the authors of the work
+     *
      * @return list with author wrapper objects
      */
     public List<AuthorStruct> getAuthors() {
@@ -167,16 +169,16 @@ public class WorkStruct extends ChildXMPStruct {
     /**
      * Sets the music sheets metadata to XMP book(work)
      *
-     * @param key        music work key
-     * @param instrument sheets instrument
+     * @param key           music work key
+     * @param instrument    sheets instrument
      * @param catalogNumber composer works catalog
-     * @param arrangedBy author name of the transcription or arrangement
+     * @param arrangedBy    author name of the transcription or arrangement
      */
     public void setSheets(String key, String instrument, String catalogNumber, String arrangedBy) {
         String sheetsPath = setStructureField(getNS(), SHEETS, PropertyOptions.STRUCT);
         MusicStruct musicStruct = new MusicStruct(getMetadata(), getSchemaNS(), sheetsPath);
         musicStruct.setKey(key);
-        musicStruct.setInstrument(instrument);
+        musicStruct.setInstruments(instrument);
         musicStruct.setCatalogNumber(catalogNumber);
         musicStruct.setArrangedBy(arrangedBy);
     }

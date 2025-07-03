@@ -105,28 +105,14 @@ public class BaseXMPStructure {
     }
 
     /**
-     * Sets the Calendar property value with current name space
-     *
-     * @param name     property name
-     * @param calendar property value
-     */
-    public void setProperty(String name, Calendar calendar) {
-        try {
-            metadata.setPropertyCalendar(getNS(), name, calendar);
-        } catch (XMPException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Gives the Calendar property value from current name space
+     * Gives the property with specified name
      *
      * @param name property name
-     * @return {@code Calendar} value | {@code null}
+     * @return {@code LocalDate} value if exist
      */
-    public Calendar getCalendarPropertyValue(String name) {
+    public Optional<XMPProperty> getProperty(String fieldNS, String name) {
         try {
-            return metadata.getPropertyCalendar(getNS(), name);
+            return Optional.ofNullable(metadata.getProperty(fieldNS, name));
         } catch (XMPException e) {
             throw new RuntimeException(e);
         }
@@ -182,7 +168,7 @@ public class BaseXMPStructure {
         try {
             int lastItemIndex = getMetadata().countArrayItems(nameSpace, arrayName);
             for (int i = 1; i <= lastItemIndex; i++) {
-                String structPath = XMPPathFactory.composeArrayItemPath(arrayName, lastItemIndex);
+                String structPath = XMPPathFactory.composeArrayItemPath(arrayName, i);
                 result.add(element.apply(structPath));
             }
         } catch (XMPException e) {

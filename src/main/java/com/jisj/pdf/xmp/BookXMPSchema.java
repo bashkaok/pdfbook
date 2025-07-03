@@ -3,16 +3,28 @@ package com.jisj.pdf.xmp;
 import com.adobe.internal.xmp.XMPException;
 import com.adobe.internal.xmp.XMPMeta;
 import com.adobe.internal.xmp.options.PropertyOptions;
+import com.adobe.internal.xmp.properties.XMPProperty;
 import com.jisj.pdf.Utils;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class BookXMPSchema extends BaseXMPStructure {
+    /**
+     * Book structure namespace
+     */
     public static final String NS = "http://www.jisj.com/ns/book/";
+    /**
+     * Book structure namespace prefix
+     */
+
     public static final String PREFIX = "book";
 
     public static final String TITLE = "Title";
-    public static final String UUID = "UUID";
+    /**
+     * Book GUID from library
+     */
+    public static final String GUID = "GUID";
     public static final String DATE_CREATED = "DateCreated";
     public static final String GENRES = "Genres";
     public static final String AUTHORS = "Authors";
@@ -47,25 +59,29 @@ public class BookXMPSchema extends BaseXMPStructure {
     }
 
     /**
-     * Sets UUID property value
+     * Sets GUID property value
      *
      * @param uuid identifier value
      */
-    public void setUUID(UUID uuid) {
-        setProperty(UUID, uuid);
+    public void setGUID(UUID uuid) {
+        setProperty(GUID, uuid);
     }
 
-    public Optional<UUID> getUUID() {
-        return Optional.ofNullable(getGUIDPropertyValue(UUID));
+    /**
+     * Gives the GUID property value
+     * @return GUID value if exists
+     */
+    public Optional<UUID> getGUID() {
+        return Optional.ofNullable(getGUIDPropertyValue(GUID));
     }
 
     /**
      * Sets the date of book created
      *
-     * @param calendar calendar of book created
+     * @param date of book created
      */
-    public void setDateCreated(Calendar calendar) {
-        setProperty(DATE_CREATED, calendar);
+    public void setDateCreated(LocalDate date) {
+        setProperty(DATE_CREATED, date.toString());
     }
 
     /**
@@ -73,8 +89,10 @@ public class BookXMPSchema extends BaseXMPStructure {
      *
      * @return created date
      */
-    public Optional<Calendar> getDateCreated() {
-        return Optional.ofNullable(getCalendarPropertyValue(DATE_CREATED));
+    public Optional<LocalDate> getDateCreated() {
+        return getProperty(getNS(), DATE_CREATED)
+                .map(XMPProperty::getValue)
+                .map(LocalDate::parse);
     }
 
     /**
@@ -104,7 +122,7 @@ public class BookXMPSchema extends BaseXMPStructure {
     public void addAuthor(String authorName, UUID authorUUID) {
         AuthorStruct author = new AuthorStruct(getMetadata(), getNS(), appendArrayStructItem(getNS(), AUTHORS));
         author.setName(authorName);
-        author.setUUID(authorUUID);
+        author.setGUID(authorUUID);
     }
 
     public List<AuthorStruct> getAuthors() {
@@ -114,13 +132,15 @@ public class BookXMPSchema extends BaseXMPStructure {
     /**
      * Sets the music sheets metadata to XMP book(work)
      *
-     * @param key        music work key
-     * @param instrument sheets instrument
+     * @param key           music work key
+     * @param instrument    sheets instrument
+     * @param catalogNumber composer catalog number
+     * @param arrangedBy    transcription/arrangement author
      */
     public void setSheets(String key, String instrument, String catalogNumber, String arrangedBy) {
         MusicStruct musicStruct = new MusicStruct(getMetadata(), getNS(), SHEETS);
         musicStruct.setKey(key);
-        musicStruct.setInstrument(instrument);
+        musicStruct.setInstruments(instrument);
         musicStruct.setCatalogNumber(catalogNumber);
         musicStruct.setArrangedBy(arrangedBy);
     }
@@ -136,6 +156,7 @@ public class BookXMPSchema extends BaseXMPStructure {
 
     /**
      * Adds the book as work item
+     *
      * @return access object to new Work element in array
      */
     public WorkStruct addWork() {
@@ -148,6 +169,6 @@ public class BookXMPSchema extends BaseXMPStructure {
      * @return works list | empty list if the works are not defined
      */
     public List<WorkStruct> getWorks() {
-        return getArrayStruct(getNS(), WORKS, p-> new WorkStruct(getMetadata(),getNS(),p));
+        return getArrayStruct(getNS(), WORKS, p -> new WorkStruct(getMetadata(), getNS(), p));
     }
 }

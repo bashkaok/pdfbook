@@ -10,15 +10,14 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PDFBookTest {
     static Path sourcePdf = Path.of("src/test/resources/pdf-test.pdf");
-    static Path modifiedPdf = Path.of("src/test/resources/pdf-test-modified.pdf");
+    static Path targetPdf = Path.of("src/test/resources/pdf-test-target.pdf");
     static PDFBook book;
 
     //book test data
@@ -46,6 +45,13 @@ class PDFBookTest {
     }
 
     @Test
+    void readTargetPdf() throws IOException, PDFException {
+        PDFBook tPdf = new PDFBook(PDFFactory.read(targetPdf));
+        assertEquals(5, tPdf.getBookXMPSchema().getWorks().size());
+        tPdf.getBookXMPSchema().getWorks().forEach(System.out::println);
+    }
+
+    @Test
     void read_set_metadata() throws PDFException, IOException, XMPException {
         XMPMeta meta = book.getMetadata();
         book.setMetadata(meta);
@@ -54,7 +60,7 @@ class PDFBookTest {
         BookXMPSchema bs = new BookXMPSchema(meta);
         setMainRecord(bs);
         setAndAssert(meta);
-        book.saveAs(modifiedPdf);
+        book.saveAs(targetPdf);
         assertModified(meta);
 
         setWork1(bs);
@@ -66,7 +72,7 @@ class PDFBookTest {
         setWork3(bs);
         setAndAssert(meta);
 
-        book.saveAs(modifiedPdf);
+        book.saveAs(targetPdf);
         assertModified(meta);
     }
 
@@ -76,12 +82,17 @@ class PDFBookTest {
     }
 
     private void assertModified(XMPMeta source) throws IOException, PDFException {
-        PDFBook mBook = new PDFBook(PDFFactory.read(modifiedPdf));
+        PDFBook mBook = new PDFBook(PDFFactory.read(targetPdf));
         XMPMeta as = mBook.getMetadata();
         assertEquals(source.dumpObject(), as.dumpObject());
 
     }
 
+    @Test
+    void dateConvert() {
+        LocalDate ld = LocalDate.of(2025, 7, 1);
+        assertEquals(ld, LocalDate.parse(ld.toString()));
+    }
 
     @Test
     void addXMP_to_protected_PDFTest() throws IOException {
@@ -115,7 +126,7 @@ class PDFBookTest {
         XMPMeta meta = book.getMetadata();
         XMPMeta bs = newTestBookData(meta);
         book.setMetadata(bs);
-        book.saveAs(modifiedPdf);
+        book.saveAs(targetPdf);
         assertModified(meta);
 
 
@@ -126,10 +137,10 @@ class PDFBookTest {
     private XMPMeta newTestBookData(XMPMeta metadata) {
         BookXMPSchema bs = new BookXMPSchema(metadata);
         bs.setTitle(TITLE);
-        bs.setUUID(UUID.fromString("b47665da-6c75-4632-952d-a2ef2619600c"));
+        bs.setGUID(UUID.fromString("b47665da-6c75-4632-952d-a2ef2619600c"));
         bs.addGenre("music");
         bs.addGenre("music_sheets");
-        Calendar date_created = new Calendar.Builder().setDate(2025, 11, 1).build();
+        LocalDate date_created = LocalDate.of(2025, 11, 1);
         bs.setDateCreated(date_created);
         bs.addAuthor("А.А. Составитель", UUID.fromString("b47665da-6c75-4632-952d-a2ef26190000"));
         bs.setSheets("Any", "piano", "", "");
@@ -137,7 +148,7 @@ class PDFBookTest {
         //Work1
         WorkStruct w1 = bs.addWork();
         w1.setTitle("Work #1");
-        w1.setUUID(UUID.fromString("b47665da-6c75-4632-952d-a2ef26196001"));
+        w1.setGUID(UUID.fromString("b47665da-6c75-4632-952d-a2ef26196001"));
         w1.addGenre("music_sheets");
         w1.setDateCreated(date_created);
         w1.addAuthor("J.S. Bach", UUID.fromString("b47665da-6c75-4632-952d-a2ef26196000"));
@@ -146,7 +157,7 @@ class PDFBookTest {
         //Work2
         WorkStruct w2 = bs.addWork();
         w2.setTitle("Work #2");
-        w2.setUUID(UUID.fromString("b47665da-6c75-4632-952d-a2ef26196002"));
+        w2.setGUID(UUID.fromString("b47665da-6c75-4632-952d-a2ef26196002"));
         w2.addGenre("music_sheets");
         w2.setDateCreated(date_created);
         w2.addAuthor("L.V. Beethoven", UUID.fromString("b47665da-6c75-4632-952d-a2ef26196001"));
@@ -157,10 +168,10 @@ class PDFBookTest {
 
     private void setMainRecord(BookXMPSchema bs) {
         bs.setTitle(TITLE);
-        bs.setUUID(UUID.fromString("b47665da-6c75-4632-952d-a2ef2619600c"));
+        bs.setGUID(UUID.fromString("b47665da-6c75-4632-952d-a2ef2619600c"));
         bs.addGenre("music");
         bs.addGenre("music_sheets");
-        Calendar date_created = new Calendar.Builder().setDate(2025, 11, 1).build();
+        LocalDate date_created = LocalDate.of(2025, 11, 1);
         bs.setDateCreated(date_created);
         bs.addAuthor("А.А. Составитель", UUID.fromString("b47665da-6c75-4632-952d-a2ef26190000"));
         bs.setSheets("Any", "piano", "", "");
@@ -169,9 +180,9 @@ class PDFBookTest {
     private void setWork1(BookXMPSchema bs) {
         WorkStruct w1 = bs.addWork();
         w1.setTitle("Work #1");
-        w1.setUUID(UUID.fromString("b47665da-6c75-4632-952d-a2ef26196001"));
+        w1.setGUID(UUID.fromString("b47665da-6c75-4632-952d-a2ef26196001"));
         w1.addGenre("music_sheets");
-        Calendar date_created = new Calendar.Builder().setDate(2025, 11, 1).build();
+        LocalDate date_created = LocalDate.of(2025, 11, 1);
         w1.setDateCreated(date_created);
         w1.addAuthor("J.S. Bach", UUID.fromString("b47665da-6c75-4632-952d-a2ef26196000"));
         w1.setSheets("F-dur", "piano", "BWV 785", "author");
@@ -180,9 +191,9 @@ class PDFBookTest {
     private void setWork2(BookXMPSchema bs) {
         WorkStruct w2 = bs.addWork();
         w2.setTitle("Work #2");
-        w2.setUUID(UUID.fromString("b47665da-6c75-4632-952d-a2ef26196002"));
+        w2.setGUID(UUID.fromString("b47665da-6c75-4632-952d-a2ef26196002"));
         w2.addGenre("music_sheets");
-        Calendar date_created = new Calendar.Builder().setDate(2025, 11, 1).build();
+        w2.setDateCreated(LocalDate.of(2025, 11, 1));
         w2.addAuthor("L.V. Beethoven", UUID.fromString("b47665da-6c75-4632-952d-a2ef26196001"));
         w2.setSheets("C-sharp minor", "piano", "BWV 785", "author");
 
@@ -191,22 +202,13 @@ class PDFBookTest {
     private void setWork3(BookXMPSchema bs) {
         WorkStruct w = bs.addWork();
         w.setTitle("Work #3");
-        w.setUUID(UUID.fromString("b47665da-6c75-4632-952d-b2ef26196002"));
+        w.setGUID(UUID.fromString("b47665da-6c75-4632-952d-b2ef26196002"));
         w.addGenre("music_sheets");
-        Calendar date_created = new Calendar.Builder().setDate(2025, 11, 1).build();
+        w.setDateCreated(LocalDate.of(2025, 11, 1));
         w.addAuthor("W.A. Mozart", UUID.fromString("b47665da-6c75-4632-952d-a2ef26196003"));
         w.setSheets("C-sharp minor", "piano", "-", "author");
 
     }
 
 
-    private String formatDate(Calendar date) {
-        String retval = null;
-        if (date != null) {
-            SimpleDateFormat formatter = new SimpleDateFormat();
-            retval = formatter.format(date.getTime());
-        }
-
-        return retval;
-    }
 }
