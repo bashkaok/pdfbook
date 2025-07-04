@@ -4,13 +4,15 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static com.jisj.pdf.PDFFactory.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PDFFactoryTest {
-    static Path sourcePdf = Path.of("src/test/resources/pdf-test.pdf");
+    static Path sourcePdf = Path.of("src/test/resources/BWV998.pdf");
+
 
     @Test
     void readPdf() throws Exception {
-        assertNotNull(PDFFactory.read(sourcePdf));
+        assertNotNull(read(sourcePdf));
     }
 }

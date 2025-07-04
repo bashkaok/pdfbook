@@ -17,6 +17,7 @@ public class Utils {
 
     /**
      * Convert the calendar date to string ISO-8601 date
+     *
      * @param calendar {@code Calendar} date
      * @return format {@code String} of "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
      */

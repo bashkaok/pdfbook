@@ -1,6 +1,5 @@
 package com.jisj.pdf;
 
-import com.adobe.internal.xmp.XMPException;
 import com.adobe.internal.xmp.XMPMeta;
 import com.jisj.pdf.xmp.BookXMPSchema;
 import com.jisj.pdf.xmp.WorkStruct;
@@ -13,11 +12,13 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import static com.jisj.pdf.PDFFactory.readPDF;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PDFBookTest {
     static Path sourcePdf = Path.of("src/test/resources/pdf-test.pdf");
     static Path targetPdf = Path.of("src/test/resources/pdf-test-target.pdf");
+    static Path enryptPdf = Path.of("src/test/resources/BWV998.PDF");
     static PDFBook book;
 
     //book test data
@@ -45,14 +46,14 @@ class PDFBookTest {
     }
 
     @Test
-    void readTargetPdf() throws IOException, PDFException {
+    void readTargetPdf() throws PDFException, IOException {
         PDFBook tPdf = new PDFBook(PDFFactory.read(targetPdf));
         assertEquals(5, tPdf.getBookXMPSchema().getWorks().size());
         tPdf.getBookXMPSchema().getWorks().forEach(System.out::println);
     }
 
     @Test
-    void read_set_metadata() throws PDFException, IOException, XMPException {
+    void read_set_metadata() throws PDFException, IOException {
         XMPMeta meta = book.getMetadata();
         book.setMetadata(meta);
         assertEquals(meta.dumpObject(), book.getMetadata().dumpObject());
@@ -76,12 +77,12 @@ class PDFBookTest {
         assertModified(meta);
     }
 
-    private void setAndAssert(XMPMeta meta) throws IOException, XMPException, PDFException {
+    private void setAndAssert(XMPMeta meta) throws PDFException {
         book.setMetadata(meta);
         assertEquals(meta.dumpObject(), book.getMetadata().dumpObject());
     }
 
-    private void assertModified(XMPMeta source) throws IOException, PDFException {
+    private void assertModified(XMPMeta source) throws PDFException, IOException {
         PDFBook mBook = new PDFBook(PDFFactory.read(targetPdf));
         XMPMeta as = mBook.getMetadata();
         assertEquals(source.dumpObject(), as.dumpObject());
@@ -95,8 +96,8 @@ class PDFBookTest {
     }
 
     @Test
-    void addXMP_to_protected_PDFTest() throws IOException {
-        try (PDFBook mBook = new PDFBook(PDFFactory.read(Path.of("src/test/resources/BWV998.PDF")))) {
+    void readEncrypted_PDF() {
+        try (PDFBook mBook = readPDF(enryptPdf)) {
 
 //        PDFBook mBook = new PDFBook(PDFReader.read(protectedPdf));
             System.out.println("isEncrypted=" + mBook.getDocument().isEncrypted());
@@ -117,12 +118,14 @@ class PDFBookTest {
 
             assertThrowsExactly(PDFEncryptedMetadata.class, mBook::getMetadata);
             assertNotNull(mBook.getDocumentInfo());
-            System.out.println(mBook.getDocumentInfo());
+            System.out.println(mBook.getDocument().getDocumentCatalog().getCOSObject());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Test
-    void addXMP_to_PDFTest() throws IOException, XMPException, PDFException {
+    void addXMP_to_PDFTest() throws PDFException, IOException {
         XMPMeta meta = book.getMetadata();
         XMPMeta bs = newTestBookData(meta);
         book.setMetadata(bs);
