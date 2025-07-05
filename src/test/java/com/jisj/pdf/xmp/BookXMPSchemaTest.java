@@ -78,6 +78,8 @@ class BookXMPSchemaTest {
         assertEquals(UUID.fromString("b47665da-6c75-4632-952d-a2ef26196000"), a.getAuthors().getFirst().getGUID().orElseThrow());
         assertEquals("F-dur", a.getSheets().getKey());
         assertEquals("author", a.getSheets().getArrangedBy());
+        book.setPreferredShelf("ShelfOne");
+        assertEquals("ShelfOne", book.getPreferredShelf());
     }
 
     @Test

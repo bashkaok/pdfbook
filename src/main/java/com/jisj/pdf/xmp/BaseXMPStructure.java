@@ -33,14 +33,26 @@ public class BaseXMPStructure {
         registerNS();
     }
 
+    /**
+     * Gives the XMP metadata object
+     * @return XMP object
+     */
     public XMPMeta getMetadata() {
         return metadata;
     }
 
+    /**
+     * Gives the current namespace
+     * @return current namespace value
+     */
     public String getNS() {
         return nameSpace;
     }
 
+    /**
+     * Gives the current namespace prefix
+     * @return current namespace prefix value
+     */
     public String getPrefix() {
         return prefix;
     }
@@ -196,7 +208,6 @@ public class BaseXMPStructure {
             throw new RuntimeException(e);
         }
         return result;
-
     }
 
     /**
@@ -236,6 +247,18 @@ public class BaseXMPStructure {
             throw new RuntimeException(e);
         }
     }
+
+
+    /**
+     * Adds to XMP scheme custom properties
+     * <p>Existing properties will be replaced</p>
+     * @param props map with properties property:value
+     */
+    public void addCustomProperties(Map<String, String> props) {
+        props.forEach(this::setProperty);
+
+    }
+
 
     @Override
     public String toString() {

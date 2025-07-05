@@ -9,6 +9,9 @@ import com.jisj.pdf.Utils;
 import java.time.LocalDate;
 import java.util.*;
 
+/**
+ * Wrapper class for PDF book XMP schema
+ */
 public class BookXMPSchema extends BaseXMPStructure {
     /**
      * Book structure namespace
@@ -17,9 +20,11 @@ public class BookXMPSchema extends BaseXMPStructure {
     /**
      * Book structure namespace prefix
      */
-
     public static final String PREFIX = "book";
 
+    /**
+     * Book title property name
+     */
     public static final String TITLE = "Title";
     /**
      * Book GUID from library
@@ -28,8 +33,18 @@ public class BookXMPSchema extends BaseXMPStructure {
     public static final String DATE_CREATED = "DateCreated";
     public static final String GENRES = "Genres";
     public static final String AUTHORS = "Authors";
+    /**
+     * Music sheets structure name
+     */
     public static final String SHEETS = "MusicSheets";
+    /**
+     * Music/literature work structure name
+     */
     public static final String WORKS = "Works";
+    /**
+     * Preferred shelf property name
+     */
+    public static final String SHELF = "PreferredShelf";
 
     /**
      * Book XMP Schema constructor
@@ -170,5 +185,23 @@ public class BookXMPSchema extends BaseXMPStructure {
      */
     public List<WorkStruct> getWorks() {
         return getArrayStruct(getNS(), WORKS, p -> new WorkStruct(getMetadata(), getNS(), p));
+    }
+
+    /**
+     * Sets the preferred shelf property
+     * @param shelf value
+     */
+    public void setPreferredShelf(String shelf) {
+        setProperty(SHELF, shelf);
+    }
+
+    /**
+     * Gives the preferred shelf property value
+     * @return value | empty String
+     */
+    public String getPreferredShelf() {
+        return getProperty(NS, SHELF)
+                .map(XMPProperty::getValue)
+                .orElse("");
     }
 }
