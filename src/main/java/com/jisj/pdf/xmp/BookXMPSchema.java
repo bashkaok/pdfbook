@@ -53,24 +53,28 @@ public class BookXMPSchema extends BaseXMPStructure {
      */
     public BookXMPSchema(XMPMeta metadata) {
         super(metadata, NS, PREFIX);
+        setRoot(this);
     }
 
     /**
      * Sets the book title
      *
-     * @param value book title
+     * @param title book title
+     * @param lang book title language
      */
-    public void setTitle(String value) {
-        setProperty(TITLE, value);
+    public void setTitle(String title, String lang) {
+        LocalizedText text = new LocalizedText(this, TITLE);
+        text.setLang(lang);
+        text.setContent(title);
     }
 
     /**
-     * Give the Title property value (string)
+     * Give the Title structure object
      *
-     * @return The property value | empty string
+     * @return Title object
      */
-    public String getTitle() {
-        return getStringPropertyValue(TITLE);
+    public LocalizedText getTitle() {
+        return new LocalizedText(this, TITLE);
     }
 
     /**
@@ -84,6 +88,7 @@ public class BookXMPSchema extends BaseXMPStructure {
 
     /**
      * Gives the GUID property value
+     *
      * @return GUID value if exists
      */
     public Optional<UUID> getGUID() {
@@ -134,9 +139,9 @@ public class BookXMPSchema extends BaseXMPStructure {
      * @param authorName author name
      * @param authorUUID author UUID
      */
-    public void addAuthor(String authorName, UUID authorUUID) {
+    public void addAuthor(String authorName, String authorNameLang, UUID authorUUID) {
         AuthorStruct author = new AuthorStruct(getMetadata(), getNS(), appendArrayStructItem(getNS(), AUTHORS));
-        author.setName(authorName);
+        author.setName(authorName, authorNameLang);
         author.setGUID(authorUUID);
     }
 
@@ -175,7 +180,7 @@ public class BookXMPSchema extends BaseXMPStructure {
      * @return access object to new Work element in array
      */
     public WorkStruct addWork() {
-        return new WorkStruct(getMetadata(), getNS(), appendArrayStructItem(getNS(), WORKS));
+        return new WorkStruct(this, appendArrayStructItem(getNS(), WORKS));
     }
 
     /**
@@ -184,11 +189,12 @@ public class BookXMPSchema extends BaseXMPStructure {
      * @return works list | empty list if the works are not defined
      */
     public List<WorkStruct> getWorks() {
-        return getArrayStruct(getNS(), WORKS, p -> new WorkStruct(getMetadata(), getNS(), p));
+        return getArrayStruct(getNS(), WORKS, p -> new WorkStruct(this, p));
     }
 
     /**
      * Sets the preferred shelf property
+     *
      * @param shelf value
      */
     public void setPreferredShelf(String shelf) {
@@ -197,6 +203,7 @@ public class BookXMPSchema extends BaseXMPStructure {
 
     /**
      * Gives the preferred shelf property value
+     *
      * @return value | empty String
      */
     public String getPreferredShelf() {

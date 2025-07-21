@@ -139,18 +139,18 @@ class PDFBookTest {
 
     private XMPMeta newTestBookData(XMPMeta metadata) {
         BookXMPSchema bs = new BookXMPSchema(metadata);
-        bs.setTitle(TITLE);
+        bs.setTitle(TITLE, "ru");
         bs.setGUID(UUID.fromString("b47665da-6c75-4632-952d-a2ef2619600c"));
         bs.addGenre("music");
         bs.addGenre("music_sheets");
         LocalDate date_created = LocalDate.of(2025, 11, 1);
         bs.setDateCreated(date_created);
-        bs.addAuthor("А.А. Составитель", UUID.fromString("b47665da-6c75-4632-952d-a2ef26190000"));
+        bs.addAuthor("А.А. Составитель", "ru", UUID.fromString("b47665da-6c75-4632-952d-a2ef26190000"));
         bs.setSheets("Any", "piano", "", "");
 
         //Work1
         WorkStruct w1 = bs.addWork();
-        w1.setTitle("Work #1");
+        w1.setTitle("Work #1", "en");
         w1.setGUID(UUID.fromString("b47665da-6c75-4632-952d-a2ef26196001"));
         w1.addGenre("music_sheets");
         w1.setDateCreated(date_created);
@@ -159,7 +159,7 @@ class PDFBookTest {
 
         //Work2
         WorkStruct w2 = bs.addWork();
-        w2.setTitle("Work #2");
+        w2.setTitle("Work #2", "en");
         w2.setGUID(UUID.fromString("b47665da-6c75-4632-952d-a2ef26196002"));
         w2.addGenre("music_sheets");
         w2.setDateCreated(date_created);
@@ -170,19 +170,19 @@ class PDFBookTest {
     }
 
     private void setMainRecord(BookXMPSchema bs) {
-        bs.setTitle(TITLE);
+        bs.setTitle(TITLE, "ru");
         bs.setGUID(UUID.fromString("b47665da-6c75-4632-952d-a2ef2619600c"));
         bs.addGenre("music");
         bs.addGenre("music_sheets");
         LocalDate date_created = LocalDate.of(2025, 11, 1);
         bs.setDateCreated(date_created);
-        bs.addAuthor("А.А. Составитель", UUID.fromString("b47665da-6c75-4632-952d-a2ef26190000"));
+        bs.addAuthor("А.А. Составитель", "ru", UUID.fromString("b47665da-6c75-4632-952d-a2ef26190000"));
         bs.setSheets("Any", "piano", "", "");
     }
 
     private void setWork1(BookXMPSchema bs) {
         WorkStruct w1 = bs.addWork();
-        w1.setTitle("Work #1");
+        w1.setTitle("Work #1", "en");
         w1.setGUID(UUID.fromString("b47665da-6c75-4632-952d-a2ef26196001"));
         w1.addGenre("music_sheets");
         LocalDate date_created = LocalDate.of(2025, 11, 1);
@@ -193,7 +193,7 @@ class PDFBookTest {
 
     private void setWork2(BookXMPSchema bs) {
         WorkStruct w2 = bs.addWork();
-        w2.setTitle("Work #2");
+        w2.setTitle("Work #2", "ru");
         w2.setGUID(UUID.fromString("b47665da-6c75-4632-952d-a2ef26196002"));
         w2.addGenre("music_sheets");
         w2.setDateCreated(LocalDate.of(2025, 11, 1));
@@ -204,7 +204,7 @@ class PDFBookTest {
 
     private void setWork3(BookXMPSchema bs) {
         WorkStruct w = bs.addWork();
-        w.setTitle("Work #3");
+        w.setTitle("Work #3", "de");
         w.setGUID(UUID.fromString("b47665da-6c75-4632-952d-b2ef26196002"));
         w.addGenre("music_sheets");
         w.setDateCreated(LocalDate.of(2025, 11, 1));

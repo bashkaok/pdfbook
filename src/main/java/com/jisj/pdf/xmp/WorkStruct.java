@@ -58,12 +58,28 @@ public class WorkStruct extends ChildXMPStruct {
     }
 
     /**
+     * Create Work structure access object
+     *
+     * @param parent   parent node
+     * @param structPath path | name of the structure in parent node
+     */
+    public WorkStruct(BaseXMPStructure parent, String structPath) {
+        this(parent.getMetadata(), parent.getNS(), structPath);
+        setRoot(parent.getRoot());
+    }
+
+    /**
      * Sets the work title
      *
-     * @param value work title
+     * @param title work title
+     * @param lang title language
      */
-    public void setTitle(String value) {
-        setStructField(TITLE, value);
+    public void setTitle(String title, String lang) {
+        String titlePath = setStructureField(getNS(), TITLE, PropertyOptions.STRUCT);
+        LocalizedText text = new LocalizedText(this, titlePath);
+        text.setRoot(this.getRoot());
+        text.setLang(lang);
+        text.setContent(title);
     }
 
     /**
@@ -71,10 +87,8 @@ public class WorkStruct extends ChildXMPStruct {
      *
      * @return The property value | empty string
      */
-    public String getTitle() {
-        return getStructField(TITLE)
-                .map(XMPProperty::getValue)
-                .orElse("");
+    public LocalizedText getTitle() {
+        return new LocalizedText(this, getStructFieldPath(NS, TITLE));
     }
 
     /**

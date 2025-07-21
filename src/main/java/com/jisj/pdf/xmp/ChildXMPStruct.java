@@ -7,11 +7,8 @@ import com.jisj.pdf.Utils;
 
 import java.util.Optional;
 
-import static com.adobe.internal.xmp.XMPPathFactory.composeStructFieldPath;
-
 public class ChildXMPStruct extends BaseXMPStructure {
     private final String schemaNS;
-    private final String structPath;
 
     /**
      * Schema constructor
@@ -25,27 +22,23 @@ public class ChildXMPStruct extends BaseXMPStructure {
     public ChildXMPStruct(XMPMeta metadata, String nameSpace, String prefix, String schemaNS, String structPath) {
         super(metadata, nameSpace, prefix);
         this.schemaNS = schemaNS;
-        this.structPath = structPath;
+        setStructName(structPath);
     }
 
     public String getSchemaNS() {
         return schemaNS;
     }
 
-    public String getStructPath() {
-        return structPath;
-    }
-
     public void setStructField(String fieldName, String value) {
-        setStructField(getSchemaNS(), getStructPath(), getNS(), fieldName, value);
+        setStructField(getSchemaNS(), getStructName(), getNS(), fieldName, value);
     }
 
     public Optional<XMPProperty> getStructField(String fieldName) {
-        return getStructField(getSchemaNS(), getStructPath(), getNS(), fieldName);
+        return getStructField(getSchemaNS(), getStructName(), getNS(), fieldName);
     }
 
     public boolean doesStructFieldExist(String fieldName) {
-        return getMetadata().doesStructFieldExist(getSchemaNS(), getStructPath(), getNS(), fieldName);
+        return getMetadata().doesStructFieldExist(getSchemaNS(), getStructName(), getNS(), fieldName);
     }
 
     /**
@@ -58,26 +51,19 @@ public class ChildXMPStruct extends BaseXMPStructure {
     public String setStructureField(String fieldNS, String fieldName, int... propertyOptions) {
         try {
             getMetadata()
-                    .setStructField(getSchemaNS(), getStructPath(), fieldNS, fieldName, "", Utils.newOptions(propertyOptions));
+                    .setStructField(getSchemaNS(), getStructName(), fieldNS, fieldName, "", Utils.newOptions(propertyOptions));
             return getStructFieldPath(fieldNS, fieldName);
         } catch (XMPException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public String getStructFieldPath(String fieldNS, String fieldName) {
-        try {
-            return getStructPath() + composeStructFieldPath(fieldNS, fieldName);
-        } catch (XMPException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Override
     public String toString() {
         return "ChildXMPStruct{" +
                 "schemaNS='" + schemaNS + '\'' +
-                ", structPath='" + structPath + '\'' +
+                ", structPath='" + getStructName() + '\'' +
                 "} " + super.toString();
     }
 }

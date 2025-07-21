@@ -9,6 +9,8 @@ import com.jisj.pdf.Utils;
 import java.util.*;
 import java.util.function.Function;
 
+import static com.adobe.internal.xmp.XMPPathFactory.composeStructFieldPath;
+
 /**
  * Base class for XMP schema
  */
@@ -16,6 +18,9 @@ public class BaseXMPStructure {
     private final XMPMeta metadata;
     private final String nameSpace;
     private final String prefix;
+    private String structName;
+    private BaseXMPStructure root;
+    private BaseXMPStructure parent;
 
     /**
      * Schema constructor
@@ -63,6 +68,54 @@ public class BaseXMPStructure {
         } catch (XMPException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Gives the name of the struct. Maybe a general path expression
+     * @return name | path of the struct
+     */
+    public String getStructName() {
+        return structName;
+    }
+
+    /**
+     * Sets the name of the struct. Maybe a general path expression
+     * @param structName name of the struct
+     */
+    public void setStructName(String structName) {
+        this.structName = structName;
+    }
+
+    /**
+     * Gives the parent node
+     * @return parent node | {@code null}
+     */
+    public BaseXMPStructure getParent() {
+        return parent;
+    }
+
+    /**
+     * Sets the parent node for the structure
+     * @param parent node of {@code BaseXMPStructure}
+     */
+    public void setParent(BaseXMPStructure parent) {
+        this.parent = parent;
+    }
+
+    /**
+     * Gives the root node object
+     * @return root node
+     */
+    public BaseXMPStructure getRoot() {
+        return root;
+    }
+
+    /**
+     * Sets the root node object
+     * @param root node object
+     */
+    public void setRoot(BaseXMPStructure root) {
+        this.root = root;
     }
 
     /**
@@ -141,6 +194,7 @@ public class BaseXMPStructure {
      */
     public void setStructField(String parentNS, String structName, String structNS,
                                String fieldName, String value) {
+        //System.out.printf("parentNS=%s, structName=%s, structNS=%s, fieldName=%s, value=%s", parentNS, structName, structNS, fieldName, value);
         try {
             getMetadata().setStructField(parentNS, structName, structNS, fieldName, value);
         } catch (XMPException e) {
@@ -258,6 +312,21 @@ public class BaseXMPStructure {
         props.forEach(this::setProperty);
 
     }
+
+    /**
+     * Resolves the compose path for the field
+     * @param fieldNS field namespace
+     * @param fieldName field name
+     * @return compose path
+     */
+    public String getStructFieldPath(String fieldNS, String fieldName) {
+        try {
+            return getStructName() + composeStructFieldPath(fieldNS, fieldName);
+        } catch (XMPException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
     @Override

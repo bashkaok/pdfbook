@@ -20,6 +20,11 @@ public class AuthorStruct extends ChildXMPStruct {
      * Author name property name
      */
     public static final String NAME = "Name";
+
+    /**
+     * Language of the author name
+     */
+    public static final String LANG = "lang";
     /**
      * Author library GUID property name
      */
@@ -44,13 +49,18 @@ public class AuthorStruct extends ChildXMPStruct {
         setStructField(NAME, value);
     }
 
+    public void setName(String name, String lang) {
+        setStructField(NAME, name);
+        setStructField(LANG, lang);
+    }
+
     /**
      * Give the author Name property value (string)
      *
      * @return The property value | null
      */
     public String getName() {
-        return getStructField(getSchemaNS(), getStructPath(), NS, NAME)
+        return getStructField(getSchemaNS(), getStructName(), NS, NAME)
                 .map(XMPProperty::getValue)
                 .orElse("");
     }
