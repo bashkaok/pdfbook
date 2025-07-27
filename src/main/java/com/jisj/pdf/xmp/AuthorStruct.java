@@ -57,7 +57,7 @@ public class AuthorStruct extends ChildXMPStruct {
     /**
      * Give the author Name property value (string)
      *
-     * @return The property value | null
+     * @return The property value | empty {@code String}
      */
     public String getName() {
         return getStructField(getSchemaNS(), getStructName(), NS, NAME)
@@ -66,11 +66,24 @@ public class AuthorStruct extends ChildXMPStruct {
     }
 
     /**
+     * Give the author name language property value (string)
+     *
+     * @return The property value | empty {@code String}
+     */
+    public String getLang() {
+        return getStructField(getSchemaNS(), getStructName(), NS, LANG)
+                .map(XMPProperty::getValue)
+                .orElse("");
+    }
+
+
+    /**
      * Sets GUID property value
      *
-     * @param uuid identifier value
+     * @param uuid identifier value. If uuid is {@code null} the property is ignored
      */
     public void setGUID(UUID uuid) {
+        if (uuid == null) return;
         setStructField(GUID, uuid.toString());
     }
 

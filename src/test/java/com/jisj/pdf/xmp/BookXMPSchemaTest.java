@@ -47,6 +47,7 @@ class BookXMPSchemaTest {
         book.addAuthor("J.S. Bach", "en", UUID.fromString("b47665da-6c75-4632-952d-a2ef26196000"));
         assertEquals(1, book.getAuthors().size());
         assertEquals("J.S. Bach", book.getAuthors().getFirst().getName());
+        assertEquals("en", book.getAuthors().getFirst().getLang());
         assertEquals(UUID.fromString("b47665da-6c75-4632-952d-a2ef26196000"), book.getAuthors().getFirst().getGUID().orElseThrow());
 
         book.addAuthor("L.V. Beethoven", "de", UUID.fromString("b47665da-6c75-4632-952d-a2ef26196001"));
